@@ -9,6 +9,20 @@ export const site = {
   medium: "https://pulasthiaberathne.medium.com/",
 };
 
+export function getExperienceYears(date = new Date()) {
+  const startDate = new Date(2019, 4, 1);
+  let years = date.getFullYear() - startDate.getFullYear();
+
+  if (
+    date.getMonth() < startDate.getMonth() ||
+    (date.getMonth() === startDate.getMonth() && date.getDate() < startDate.getDate())
+  ) {
+    years -= 1;
+  }
+
+  return years;
+}
+
 export const navigation = [
   { label: "About", href: "#about" },
   { label: "Expertise", href: "#expertise" },
@@ -26,7 +40,7 @@ export const expertise = [
 
 export const caseStudies = [
   { number: "01", type: "Platform engineering", title: "Unified Location Discovery Platform", description: "A backend platform that combined location and place information from multiple external providers into a consistent discovery experience.", details: ["Built backend services integrating multiple external data providers.", "Normalized heterogeneous provider data into consistent application models.", "Implemented geographic deduplication, relevance-based ranking, and proximity-aware search.", "Used caching to reduce unnecessary external API calls and exposed a consistent API layer to consumers."], technologies: ["Node.js", "TypeScript", "MongoDB", "PostgreSQL", "AWS", "Google Places", "TripAdvisor APIs"] },
-  { number: "02", type: "Current professional work", title: "Enterprise Distributed Services", description: "Work on enterprise distributed services and applications using Java / Spring Boot and TypeScript / NestJS, with service-to-service communication using gRPC / Protocol Buffers and deployment into Kubernetes-based cloud environments.", details: ["Details intentionally limited to respect client and employer confidentiality."], technologies: ["Java", "Spring Boot", "NestJS", "TypeScript", "gRPC", "Protocol Buffers", "React", "Kubernetes", "Helm", "GCP"] },
+  { number: "02", type: "Current professional work", title: "Enterprise Distributed Services", description: "Building and maintaining enterprise distributed services and applications using Java / Spring Boot and TypeScript / NestJS, with service-to-service communication using gRPC / Protocol Buffers and deployment into Kubernetes-based cloud environments.", details: ["Details intentionally limited to respect client and employer confidentiality."], technologies: ["Java", "Spring Boot", "NestJS", "TypeScript", "gRPC", "Protocol Buffers", "React", "Kubernetes", "Helm", "GCP"] },
   { number: "03", type: "Product engineering", title: "Mobile & Web Product Engineering", description: "Professional work across React, React Native, and TypeScript applications, including API integration, GraphQL, mobile development, production troubleshooting, and reliability work.", details: [], technologies: ["React", "React Native", "TypeScript", "GraphQL", "REST APIs"] },
 ];
 
