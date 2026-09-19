@@ -75,3 +75,36 @@ If the local environment prevents Next.js 16 Turbopack from starting its worker 
 ```bash
 npx next build --webpack
 ```
+
+## CI/CD with GitHub Actions and Vercel
+
+This repository uses GitHub Actions for validation and explicit Vercel CLI deployment. Vercel's automatic GitHub deployment integration is not used.
+
+- Pull requests targeting `main` run linting, TypeScript checking, and a production build. Pull requests never deploy.
+- Pushes to `main` run the same validation.
+- Production deployment runs only after the `CI` workflow succeeds for a push to `main`.
+- The deployment workflow checks out the validated commit, runs `vercel pull`, `vercel build`, and `vercel deploy --prebuilt --prod`.
+- Deployment concurrency is protected so an older production deployment is cancelled when a newer one is ready.
+
+### Required GitHub secrets
+
+Create these repository secrets under **Settings → Secrets and variables → Actions**:
+
+- `VERCEL_TOKEN`
+- `VERCEL_ORG_ID`
+- `VERCEL_PROJECT_ID`
+
+Do not commit these values or a `.vercel` directory. `.vercel` is already ignored by `.gitignore`.
+
+### Linking the Vercel project
+
+Before the first deployment, authenticate with the Vercel CLI locally and link this repository to the intended Vercel project:
+
+```bash
+npx vercel@latest login
+npx vercel@latest link
+```
+
+Choose the correct Vercel account/team and existing project, or create the project when prompted. The CLI writes local project metadata under `.vercel`, including the organization and project identifiers. Copy those identifiers into the `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` GitHub secrets, and create a `VERCEL_TOKEN` from your Vercel account settings. Never commit `.vercel` or the token.
+
+Production deployment is intentionally limited to successful CI runs on `main`. The custom domain `pulasthiabey.dev` will be configured separately after the first successful deployment; this repository does not change DNS or email settings.
