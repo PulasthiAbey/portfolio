@@ -53,4 +53,36 @@ jobs:
         run: npx vercel@latest build --prod --token="$VERCEL_TOKEN"
 
       - name: Deploy prebuilt output to Vercel
-        run: npx vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+        id: deploy
+        shell: bash
+        run: |
+          set -o pipefail
+          deploy_log="$RUNNER_TEMP/vercel-deploy.log"
+          npx vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN" 2>&1 | tee "$deploy_log"
+          deployment_url="$(grep -Eo 'https://[^[:space:]]+\.vercel\.app' "$deploy_log" | tail -n 1)"
+
+          if [ -z "$deployment_url" ]; then
+            echo "Could not determine the Vercel deployment URL from the CLI output." >&2
+            exit 1
+          fi
+
+          echo "deployment_url=$deployment_url" >> "$GITHUB_OUTPUT"
+
+      - name: Publish deployment summary
+        if: ${{ success() }}
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment_url }}
+          COMMIT_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          short_sha="${COMMIT_SHA:0:7}"
+          {
+            echo "## 🚀 Production Deployment"
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Environment | Production |"
+            echo "| Commit | \`$short_sha\` |"
+            echo "| Deployment | [Open production site]($DEPLOYMENT_URL) |"
+            echo
+            echo "✅ Production deployment successful"
+          } >> "$GITHUB_STEP_SUMMARY"
