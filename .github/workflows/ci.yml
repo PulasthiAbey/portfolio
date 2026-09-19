@@ -39,53 +39,43 @@ jobs:
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          node <<'NODE'
-          const fs = require("node:fs");
-          const body = process.env.PR_BODY ?? "";
-          const requiredSections = [
-            "## Summary",
-            "## Changes",
-            "## Validation",
-            "## UI review",
-            "## Deployment safety",
-          ];
-          const requiredChecks = [
-            "- [x] `npm run lint`",
-            "- [x] `npm run typecheck`",
-            "- [x] `npm test`",
-            "- [x] `npm run test:coverage`",
-            "- [x] `npm audit --audit-level=high`",
-            "- [x] No secrets, credentials, `.env` files, or `.vercel` metadata included",
-            "- [x] No DNS, email, or Vercel project settings changed unintentionally",
-            "- [x] Changes are safe to deploy to production",
-          ];
-          const missingSections = requiredSections.filter((section) => !body.includes(section));
-          const incompleteChecks = requiredChecks.filter((check) => !body.includes(check));
-          const buildChecked = body.includes("- [x] `npm run build`") || body.includes("- [x] `npx next build --webpack`");
-          const noUiChanges = body.includes("- [x] No UI changes");
-          const uiReviewChecks = [
-            "- [x] Reviewed responsive behavior on mobile and desktop",
-            "- [x] Reviewed both dark and light modes",
-            "- [x] Checked keyboard focus states and accessibility",
-            "- [x] Added or updated screenshots when visual changes are included",
-          ];
-
-          if (!buildChecked) incompleteChecks.push("npm run build or npx next build --webpack");
-          if (!noUiChanges && !uiReviewChecks.every((check) => body.includes(check))) incompleteChecks.push("UI review checklist");
-
-          if (missingSections.length || incompleteChecks.length) {
-            if (missingSections.length) console.error(`Missing PR template sections: ${missingSections.join(", ")}`);
-            if (incompleteChecks.length) console.error(`Incomplete PR template checks: ${incompleteChecks.join(", ")}`);
-            process.exit(1);
-          }
-
-          if (!fs.existsSync(".github/pull_request_template.md")) {
-            console.error(".github/pull_request_template.md is missing.");
-            process.exit(1);
-          }
-
-          console.log("PR template structure and required checks are complete.");
-          NODE
+          node -e '
+            const fs = require("node:fs");
+            const body = process.env.PR_BODY ?? "";
+            const requiredSections = ["## Summary", "## Changes", "## Validation", "## UI review", "## Deployment safety"];
+            const requiredChecks = [
+              "- [x] `npm run lint`",
+              "- [x] `npm run typecheck`",
+              "- [x] `npm test`",
+              "- [x] `npm run test:coverage`",
+              "- [x] `npm audit --audit-level=high`",
+              "- [x] No secrets, credentials, `.env` files, or `.vercel` metadata included",
+              "- [x] No DNS, email, or Vercel project settings changed unintentionally",
+              "- [x] Changes are safe to deploy to production",
+            ];
+            const missingSections = requiredSections.filter((section) => !body.includes(section));
+            const incompleteChecks = requiredChecks.filter((check) => !body.includes(check));
+            const buildChecked = body.includes("- [x] `npm run build`") || body.includes("- [x] `npx next build --webpack`");
+            const noUiChanges = body.includes("- [x] No UI changes");
+            const uiReviewChecks = [
+              "- [x] Reviewed responsive behavior on mobile and desktop",
+              "- [x] Reviewed both dark and light modes",
+              "- [x] Checked keyboard focus states and accessibility",
+              "- [x] Added or updated screenshots when visual changes are included",
+            ];
+            if (!buildChecked) incompleteChecks.push("npm run build or npx next build --webpack");
+            if (!noUiChanges && !uiReviewChecks.every((check) => body.includes(check))) incompleteChecks.push("UI review checklist");
+            if (missingSections.length || incompleteChecks.length) {
+              if (missingSections.length) console.error(`Missing PR template sections: ${missingSections.join(", ")}`);
+              if (incompleteChecks.length) console.error(`Incomplete PR template checks: ${incompleteChecks.join(", ")}`);
+              process.exit(1);
+            }
+            if (!fs.existsSync(".github/pull_request_template.md")) {
+              console.error(".github/pull_request_template.md is missing.");
+              process.exit(1);
+            }
+            console.log("PR template structure and required checks are complete.");
+          '
 
       - name: Lint
         run: npm run lint
@@ -100,23 +90,23 @@ jobs:
         if: always()
         run: |
           if [ -f coverage/coverage-summary.json ]; then
-            node <<'NODE'
-            const fs = require("node:fs");
-            const summary = JSON.parse(fs.readFileSync("coverage/coverage-summary.json", "utf8")).total;
-            const format = (metric) => `${metric.pct}% (${metric.covered}/${metric.total})`;
-            const markdown = [
-              "### Test coverage",
-              "",
-              "| Metric | Coverage |",
-              "| --- | ---: |",
-              `| Lines | ${format(summary.lines)} |`,
-              `| Statements | ${format(summary.statements)} |`,
-              `| Functions | ${format(summary.functions)} |`,
-              `| Branches | ${format(summary.branches)} |`,
-              "",
-            ].join("\n");
-            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, markdown);
-            NODE
+            node -e '
+              const fs = require("node:fs");
+              const summary = JSON.parse(fs.readFileSync("coverage/coverage-summary.json", "utf8")).total;
+              const format = (metric) => `${metric.pct}% (${metric.covered}/${metric.total})`;
+              const markdown = [
+                "### Test coverage",
+                "",
+                "| Metric | Coverage |",
+                "| --- | ---: |",
+                `| Lines | ${format(summary.lines)} |`,
+                `| Statements | ${format(summary.statements)} |`,
+                `| Functions | ${format(summary.functions)} |`,
+                `| Branches | ${format(summary.branches)} |`,
+                "",
+              ].join("\n");
+              fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, markdown);
+            '
           else
             echo "Coverage summary was not generated."
           fi
