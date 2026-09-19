@@ -30,6 +30,25 @@ describe("portfolio page", () => {
     ]);
   });
 
+  it("provides an accessible compact navigation menu", () => {
+    render(<Home />);
+
+    const menuButton = screen.getByRole("button", { name: "Open navigation menu" });
+    fireEvent.click(menuButton);
+
+    const mobileNavigation = screen.getByRole("navigation", { name: "Mobile navigation" });
+    expect(within(mobileNavigation).getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual([
+      "#about",
+      "#expertise",
+      "#work",
+      "#writing",
+      "#contact",
+    ]);
+
+    fireEvent.click(within(mobileNavigation).getByRole("link", { name: "Work" }));
+    expect(screen.getByRole("button", { name: "Open navigation menu" })).toBeInTheDocument();
+  });
+
   it("uses the configured external and contact destinations", () => {
     render(<Home />);
 
