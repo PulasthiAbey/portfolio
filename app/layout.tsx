@@ -29,6 +29,8 @@ const structuredData = {
         "https://www.linkedin.com/in/pulasthi-aberathne-b87979175/",
         "https://github.com/PulasthiAbey",
         "https://pulasthiaberathne.medium.com/",
+        "https://stackoverflow.com/users/10832040/pulasthi-aberathne",
+        "https://www.instagram.com/pula.abe/",
       ],
     },
     {
