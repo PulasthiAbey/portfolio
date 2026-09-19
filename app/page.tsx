@@ -1,69 +1,30 @@
 import Image from "next/image";
+import { Icon } from "@/components/icon";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { caseStudies, expertise, navigation, site, writing } from "@/data/portfolio";
+
+function ExternalLink({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) {
+  return <a href={href} target="_blank" rel="noreferrer" className={className}>{children}</a>;
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main>
+      <header className="site-header"><div className="container nav-wrap"><a className="brand" href="#top" aria-label="Pulasthi Aberathne home"><Image src="/pa-logo-light.png" alt="PA" width={39} height={47} className="theme-logo logo-light" priority /><Image src="/pa-logo-dark.png" alt="" width={39} height={47} className="theme-logo logo-dark" priority /><span className="brand-name">Pulasthi</span></a><nav aria-label="Primary navigation" className="nav-links">{navigation.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}</nav><div className="nav-actions"><ThemeToggle /><a href="#contact" className="nav-contact">Let&apos;s talk <Icon name="arrow-up-right" className="size-3.5" /></a></div></div></header>
+
+      <section id="top" className="hero-section" aria-labelledby="hero-title"><div className="container hero-grid"><div className="hero-copy"><p className="eyebrow"><span className="status-dot" /> Available for thoughtful engineering conversations</p><h1 id="hero-title">Pulasthi<br /><span>Aberathne</span></h1><p className="hero-role">Full-Stack Engineer</p><p className="hero-lede">I build reliable production systems across backend, frontend, and cloud infrastructure.</p><p className="hero-support">Senior software engineer with 7+ years of experience building and operating production software across distributed systems, APIs, web and mobile applications, and cloud infrastructure.</p><div className="hero-actions"><a href="#work" className="button button-primary">View my work <Icon name="arrow-up-right" className="size-4" /></a><a href="#contact" className="button button-secondary">Get in touch</a></div><div className="social-links" aria-label="Social links"><ExternalLink href={site.github} className="social-link"><Icon name="github" className="size-4" /> GitHub</ExternalLink><ExternalLink href={site.linkedin} className="social-link"><Icon name="linkedin" className="size-4" /> LinkedIn</ExternalLink></div></div><div className="architecture-panel" aria-label="Decorative systems architecture illustration"><div className="architecture-label">A systems view</div><div className="architecture-canvas"><div className="architecture-line line-one" /><div className="architecture-line line-two" /><div className="architecture-line line-three" /><div className="architecture-line line-four" /><div className="arch-node node-client"><span className="node-dot" /><span>Client</span></div><div className="arch-node node-api"><span className="node-dot" /><span>API</span></div><div className="arch-node node-services"><span className="node-dot" /><span>Services</span></div><div className="arch-node node-data"><span className="node-dot" /><span>Data</span></div><div className="arch-node node-cloud"><span className="node-dot" /><span>Cloud</span></div><div className="architecture-caption"><span>01</span> reliability is a design constraint</div></div></div></div><div className="container scroll-cue"><span>Scroll to explore</span><span className="scroll-line" /></div></section>
+
+      <section id="about" className="section about-section" aria-labelledby="about-title"><div className="container section-grid"><div className="section-intro"><p className="section-kicker">/ 01 — About</p><h2 id="about-title">Engineering with the whole system in view.</h2></div><div className="about-copy"><p className="lead-copy">I&apos;m a full-stack software engineer with 7+ years of experience building and maintaining production software. My work spans backend services and APIs, distributed systems, frontend and mobile applications, cloud infrastructure, and the troubleshooting that happens after launch.</p><p>I currently work on enterprise distributed systems using Java, Spring Boot, NestJS, TypeScript, React, gRPC / Protocol Buffers, Kubernetes, and GCP. Previously, I worked extensively with Node.js, React Native, PostgreSQL, MongoDB, and AWS.</p><p>That range helps me contribute across boundaries: from authentication and integrations to code review, technical leadership, and the details that make a system dependable in practice.</p></div></div></section>
+
+      <section id="expertise" className="section expertise-section" aria-labelledby="expertise-title"><div className="container"><div className="section-heading"><div><p className="section-kicker">/ 02 — Expertise</p><h2 id="expertise-title">Capability areas</h2></div><p className="heading-note">A practical toolkit shaped by production work, not a checklist.</p></div><div className="expertise-grid">{expertise.map((item) => <article className="expertise-card" key={item.number}><div className="card-topline"><span>{item.number}</span><span className="card-arrow"><Icon name="arrow-up-right" className="size-4" /></span></div><h3>{item.title}</h3><p>{item.description}</p><div className="tag-list">{item.technologies.map((technology) => <span key={technology} className="tag">{technology}</span>)}</div></article>)}</div></div></section>
+
+      <section id="work" className="section work-section" aria-labelledby="work-title"><div className="container"><div className="section-heading"><div><p className="section-kicker">/ 03 — Selected work</p><h2 id="work-title">Systems I&apos;ve worked on</h2></div><p className="heading-note">A few representative case studies. The details stay grounded in what can be shared.</p></div><div className="case-study-list">{caseStudies.map((study) => <article className="case-study" key={study.number}><div className="case-number">{study.number}</div><div className="case-main"><p className="case-type">{study.type}</p><h3>{study.title}</h3><p className="case-description">{study.description}</p>{study.details.length > 0 && <ul className="case-details">{study.details.map((detail) => <li key={detail}>{detail}</li>)}</ul>}<div className="tag-list">{study.technologies.map((technology) => <span key={technology} className="tag">{technology}</span>)}</div></div><div className="case-mark" aria-hidden="true"><span /></div></article>)}</div></div></section>
+
+      <section id="writing" className="section writing-section" aria-labelledby="writing-title"><div className="container writing-layout"><div><p className="section-kicker">/ 04 — Writing</p><h2 id="writing-title">Notes from the field.</h2></div><div className="writing-card"><p className="writing-label">Featured article</p><h3>{writing.title}</h3><p>{writing.description}</p><ExternalLink href={writing.href} className="text-link">Read on Medium <Icon name="arrow-up-right" className="size-4" /></ExternalLink></div><ExternalLink href={site.medium} className="view-all">View all writing <Icon name="arrow-up-right" className="size-4" /></ExternalLink></div></section>
+
+      <section id="contact" className="contact-section" aria-labelledby="contact-title"><div className="container contact-inner"><p className="section-kicker">/ 05 — Contact</p><h2 id="contact-title">Let&apos;s build something reliable.</h2><p>I&apos;m open to discussing engineering work, technical collaboration, and relevant opportunities where careful engineering can make a difference.</p><div className="contact-links"><a className="contact-email" href={`mailto:${site.email}`}><Icon name="mail" className="size-5" />{site.email}</a><ExternalLink href={site.linkedin} className="contact-link">LinkedIn <Icon name="arrow-up-right" className="size-4" /></ExternalLink><ExternalLink href={site.github} className="contact-link">GitHub <Icon name="arrow-up-right" className="size-4" /></ExternalLink></div></div></section>
+
+      <footer className="site-footer"><div className="container footer-inner"><div><p className="footer-name">Pulasthi Aberathne</p><p className="footer-role">Full-Stack Engineer</p></div><div className="footer-right"><div className="footer-links"><ExternalLink href={site.github}>GitHub</ExternalLink><ExternalLink href={site.linkedin}>LinkedIn</ExternalLink><ExternalLink href={site.medium}>Medium</ExternalLink></div><p className="copyright">© {new Date().getFullYear()} Pulasthi Aberathne</p></div></div></footer>
+    </main>
   );
 }
