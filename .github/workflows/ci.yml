@@ -4,6 +4,11 @@ on:
   pull_request:
     branches:
       - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - edited
   push:
     branches:
       - main
@@ -41,30 +46,32 @@ jobs:
         run: |
           node -e '
             const fs = require("node:fs");
-            const body = (process.env.PR_BODY ?? "").replace(/\[\s*x\s*\]/gi, "[x]");
+            const body = (process.env.PR_BODY ?? "").replace(/\r/g, "").replace(/\u00a0/g, " ");
+            const checkedLines = body.split("\n").filter((line) => /^\s*[-*]\s*\[\s*x\s*\]/i.test(line));
+            const isChecked = (text) => checkedLines.some((line) => line.includes(text));
             const requiredSections = ["## Summary", "## Changes", "## Validation", "## UI review", "## Deployment safety"];
             const requiredChecks = [
-              "- [x] `npm run lint`",
-              "- [x] `npm run typecheck`",
-              "- [x] `npm test`",
-              "- [x] `npm run test:coverage`",
-              "- [x] `npm audit --audit-level=high`",
-              "- [x] No secrets, credentials, `.env` files, or `.vercel` metadata included",
-              "- [x] No DNS, email, or Vercel project settings changed unintentionally",
-              "- [x] Changes are safe to deploy to production",
+              "`npm run lint`",
+              "`npm run typecheck`",
+              "`npm test`",
+              "`npm run test:coverage`",
+              "`npm audit --audit-level=high`",
+              "No secrets, credentials, `.env` files, or `.vercel` metadata included",
+              "No DNS, email, or Vercel project settings changed unintentionally",
+              "Changes are safe to deploy to production",
             ];
             const missingSections = requiredSections.filter((section) => !body.includes(section));
-            const incompleteChecks = requiredChecks.filter((check) => !body.includes(check));
-            const buildChecked = body.includes("- [x] `npm run build`") || body.includes("- [x] `npx next build --webpack`");
-            const noUiChanges = body.includes("- [x] No UI changes");
+            const incompleteChecks = requiredChecks.filter((check) => !isChecked(check));
+            const buildChecked = isChecked("`npm run build`") || isChecked("`npx next build --webpack`");
+            const noUiChanges = isChecked("No UI changes");
             const uiReviewChecks = [
-              "- [x] Reviewed responsive behavior on mobile and desktop",
-              "- [x] Reviewed both dark and light modes",
-              "- [x] Checked keyboard focus states and accessibility",
-              "- [x] Added or updated screenshots when visual changes are included",
+              "Reviewed responsive behavior on mobile and desktop",
+              "Reviewed both dark and light modes",
+              "Checked keyboard focus states and accessibility",
+              "Added or updated screenshots when visual changes are included",
             ];
             if (!buildChecked) incompleteChecks.push("npm run build or npx next build --webpack");
-            if (!noUiChanges && !uiReviewChecks.every((check) => body.includes(check))) incompleteChecks.push("UI review checklist");
+            if (!noUiChanges && !uiReviewChecks.every(isChecked)) incompleteChecks.push("UI review checklist");
             if (missingSections.length || incompleteChecks.length) {
               if (missingSections.length) console.error(`Missing PR template sections: ${missingSections.join(", ")}`);
               if (incompleteChecks.length) console.error(`Incomplete PR template checks: ${incompleteChecks.join(", ")}`);
