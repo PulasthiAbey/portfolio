@@ -61,8 +61,17 @@ Run linting and the TypeScript check:
 
 ```bash
 npm run lint
-npx tsc --noEmit
+npm run typecheck
 ```
+
+Run the test suite and coverage gate:
+
+```bash
+npm test
+npm run test:coverage
+```
+
+Coverage thresholds are 70% for lines, statements, and functions, and 60% for branches. Coverage output is written to `coverage/`, which is ignored from version control.
 
 Run a production build:
 
@@ -80,7 +89,8 @@ npx next build --webpack
 
 This repository uses GitHub Actions for validation and explicit Vercel CLI deployment. Vercel's automatic GitHub deployment integration is not used.
 
-- Pull requests targeting `main` run linting, TypeScript checking, and a production build. Pull requests never deploy.
+- Pull requests targeting `main` run linting, TypeScript checking, Vitest tests with coverage thresholds, a high/critical dependency audit, and a production build. Pull requests never deploy.
+- Pull requests also validate that the PR template sections are present and that the required validation and deployment-safety checkboxes are completed.
 - Pushes to `main` run the same validation.
 - Production deployment runs only after the `CI` workflow succeeds for a push to `main`.
 - The deployment workflow checks out the validated commit, runs `vercel pull`, `vercel build`, and `vercel deploy --prebuilt --prod`.

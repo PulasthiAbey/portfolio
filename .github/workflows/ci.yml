@@ -34,11 +34,87 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate pull request template
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const body = process.env.PR_BODY ?? "";
+          const requiredSections = [
+            "## Summary",
+            "## Changes",
+            "## Validation",
+            "## UI review",
+            "## Deployment safety",
+          ];
+          const requiredChecks = [
+            "npm run lint",
+            "npm run typecheck",
+            "npm test",
+            "npm run test:coverage",
+            "npm audit --audit-level=high",
+            "No secrets, credentials, `.env` files, or `.vercel` metadata included",
+            "No DNS, email, or Vercel project settings changed unintentionally",
+            "Changes are safe to deploy to production",
+          ];
+          const missingSections = requiredSections.filter((section) => !body.includes(section));
+          const incompleteChecks = requiredChecks.filter((check) => !body.includes(`- [x] ${check}`));
+          const buildChecked = body.includes("- [x] `npm run build`") || body.includes("- [x] `npx next build --webpack`");
+
+          if (!buildChecked) incompleteChecks.push("npm run build or npx next build --webpack");
+
+          if (missingSections.length || incompleteChecks.length) {
+            if (missingSections.length) console.error(`Missing PR template sections: ${missingSections.join(", ")}`);
+            if (incompleteChecks.length) console.error(`Incomplete PR template checks: ${incompleteChecks.join(", ")}`);
+            process.exit(1);
+          }
+
+          if (!fs.existsSync(".github/pull_request_template.md")) {
+            console.error(".github/pull_request_template.md is missing.");
+            process.exit(1);
+          }
+
+          console.log("PR template structure and required checks are complete.");
+          NODE
+
       - name: Lint
         run: npm run lint
 
       - name: Type check
-        run: npx tsc --noEmit
+        run: npm run typecheck
+
+      - name: Test suite and coverage
+        run: npm run test:coverage
+
+      - name: Publish coverage summary
+        if: always()
+        run: |
+          if [ -f coverage/coverage-summary.json ]; then
+            node <<'NODE'
+            const fs = require("node:fs");
+            const summary = JSON.parse(fs.readFileSync("coverage/coverage-summary.json", "utf8")).total;
+            const format = (metric) => `${metric.pct}% (${metric.covered}/${metric.total})`;
+            const markdown = [
+              "### Test coverage",
+              "",
+              "| Metric | Coverage |",
+              "| --- | ---: |",
+              `| Lines | ${format(summary.lines)} |`,
+              `| Statements | ${format(summary.statements)} |`,
+              `| Functions | ${format(summary.functions)} |`,
+              `| Branches | ${format(summary.branches)} |`,
+              "",
+            ].join("\n");
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, markdown);
+            NODE
+          else
+            echo "Coverage summary was not generated."
+          fi
+
+      - name: Dependency audit
+        run: npm audit --audit-level=high
 
       - name: Production build
         run: npm run build
