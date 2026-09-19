@@ -41,7 +41,7 @@ jobs:
         run: |
           node -e '
             const fs = require("node:fs");
-            const body = process.env.PR_BODY ?? "";
+            const body = (process.env.PR_BODY ?? "").replace(/\[\s*x\s*\]/gi, "[x]");
             const requiredSections = ["## Summary", "## Changes", "## Validation", "## UI review", "## Deployment safety"];
             const requiredChecks = [
               "- [x] `npm run lint`",
