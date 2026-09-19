@@ -105,6 +105,6 @@ npx vercel@latest login
 npx vercel@latest link
 ```
 
-Choose the correct Vercel account/team and existing project, or create the project when prompted. The CLI writes local project metadata under `.vercel`, including the organization and project identifiers. Copy those identifiers into the `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` GitHub secrets, and create a `VERCEL_TOKEN` from your Vercel account settings. Never commit `.vercel` or the token.
+Choose the correct Vercel account and existing project, or create the project when prompted. The CLI writes local project metadata under `.vercel`, including the organization and project identifiers. Copy those identifiers into the `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` GitHub secrets, and create a `VERCEL_TOKEN` from your Vercel account settings. Never commit `.vercel` or the token.
 
 Production deployment is intentionally limited to successful CI runs on `main`. The custom domain `pulasthiabey.dev` will be configured separately after the first successful deployment; this repository does not change DNS or email settings.
