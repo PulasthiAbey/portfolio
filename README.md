@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pulasthi Aberathne — Personal Engineering Portfolio
 
-## Getting Started
+Personal portfolio for Pulasthi Aberathne, a Full-Stack Engineer focused on reliable production systems across backend, frontend, distributed systems, cloud infrastructure, and production engineering.
 
-First, run the development server:
+Live site: [pulasthiabey.dev](https://pulasthiabey.dev)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Built with
+
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- CSS-driven animations
+- Inline SVG icons
+
+The site is intentionally static and dependency-light. It does not use a database, CMS, authentication, backend API, or state-management library.
+
+## Features
+
+- Responsive single-page portfolio layout
+- Dark and light themes with system preference detection and localStorage persistence
+- PA logo variants for light and dark themes
+- PA browser icon and SEO metadata
+- Accessible navigation, focus states, semantic headings, and reduced-motion support
+- Animated hero architecture visual with connected SVG service nodes
+- About, expertise, selected work, writing, contact, and footer sections
+- Dynamic experience-year copy based on a May 2019 career start date
+
+## Project structure
+
+```text
+app/
+  globals.css       Global design system, themes, responsive styles, and animations
+  icon.png          PA browser icon
+  layout.tsx        Root layout and metadata
+  page.tsx          Portfolio page composition
+components/
+  icon.tsx           Inline SVG icon set
+  theme-toggle.tsx  Client-side theme switcher
+data/
+  portfolio.ts       Portfolio content, links, case studies, and experience calculation
+public/
+  pa-logo-light.png  Blue/navy PA logo for light mode
+  pa-logo-dark.png   Light PA logo for dark mode
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Install dependencies and start the development server:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+## Verification
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run linting and the TypeScript check:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run lint
+npx tsc --noEmit
+```
 
-## Deploy on Vercel
+Run a production build:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If the local environment prevents Next.js 16 Turbopack from starting its worker process, the webpack fallback can be used:
+
+```bash
+npx next build --webpack
+```
