@@ -7,6 +7,7 @@ export const site = {
   github: "https://github.com/PulasthiAbey",
   linkedin: "https://www.linkedin.com/in/pulasthi-aberathne-b87979175/",
   medium: "https://pulasthiaberathne.medium.com/",
+  stackoverflow: "https://stackoverflow.com/users/10832040/pulasthi-aberathne",
 };
 
 export function getExperienceYears(date = new Date()) {
@@ -24,11 +25,11 @@ export function getExperienceYears(date = new Date()) {
 }
 
 export const navigation = [
-  { label: "About", href: "#about" },
-  { label: "Expertise", href: "#expertise" },
-  { label: "Work", href: "#work" },
-  { label: "Writing", href: "#writing" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Expertise", href: "/#expertise" },
+  { label: "Work", href: "/#work" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const expertise = [
@@ -39,9 +40,30 @@ export const expertise = [
 ];
 
 export const caseStudies = [
-  { number: "01", type: "Platform engineering", title: "Unified Location Discovery Platform", description: "A backend platform that combined location and place information from multiple external providers into a consistent discovery experience.", details: ["Built backend services integrating multiple external data providers.", "Normalized heterogeneous provider data into consistent application models.", "Implemented geographic deduplication, relevance-based ranking, and proximity-aware search.", "Used caching to reduce unnecessary external API calls and exposed a consistent API layer to consumers."], technologies: ["Node.js", "TypeScript", "MongoDB", "PostgreSQL", "AWS", "Google Places", "TripAdvisor APIs"] },
-  { number: "02", type: "Current professional work", title: "Enterprise Distributed Services", description: "Building and maintaining enterprise distributed services and applications using Java / Spring Boot and TypeScript / NestJS, with service-to-service communication using gRPC / Protocol Buffers and deployment into Kubernetes-based cloud environments.", details: ["Details intentionally limited to respect client and employer confidentiality."], technologies: ["Java", "Spring Boot", "NestJS", "TypeScript", "gRPC", "Protocol Buffers", "React", "Kubernetes", "Helm", "GCP"] },
+  { number: "01", type: "Platform engineering", title: "Unified Location Discovery Platform", description: "Multi-provider location discovery with normalization, geographic deduplication, ranking, geospatial search, and caching.", details: ["Built backend services integrating multiple external data providers.", "Normalized heterogeneous provider data into consistent application models.", "Implemented geographic deduplication, relevance-based ranking, and proximity-aware search.", "Used caching to reduce unnecessary external API calls and exposed a consistent API layer to consumers."], technologies: ["Node.js", "TypeScript", "MongoDB", "PostgreSQL", "AWS", "Google Places", "TripAdvisor APIs"] },
+  { number: "02", type: "Enterprise distributed systems", title: "Zebra Nucleus", description: "Enterprise distributed systems work across backend services, service communication, frontend applications, and cloud-native delivery.", details: ["High-level case study; details intentionally limited to respect client and employer confidentiality."], technologies: ["Java", "Spring Boot", "TypeScript", "gRPC", "React", "Helm", "GCP"] },
   { number: "03", type: "Product engineering", title: "Mobile & Web Product Engineering", description: "Professional work across React, React Native, and TypeScript applications, including API integration, GraphQL, mobile development, production troubleshooting, and reliability work.", details: [], technologies: ["React", "React Native", "TypeScript", "GraphQL", "REST APIs"] },
 ];
 
-export const writing = { title: "gRPC vs REST: What I Learned Using Both in Distributed Systems", description: "Why the right choice depends less on the technology and more on the communication boundary you’re designing.", href: site.medium };
+export type BlogPost = {
+  slug?: string;
+  title: string;
+  description: string;
+  href: string;
+  topics: string[];
+  publishedAt?: string;
+  updatedAt?: string;
+  publication?: string;
+  external: boolean;
+};
+
+export const blogPosts: BlogPost[] = [{
+  title: "gRPC vs REST: What I Learned Using Both in Distributed Systems",
+  description: "Why the right choice depends less on the technology and more on the communication boundary you’re designing.",
+  href: "https://pulasthiaberathne.medium.com/grpc-vs-rest-what-i-learned-using-both-in-distributed-systems-390945ad7174",
+  topics: ["Distributed Systems", "gRPC", "REST", "APIs"],
+  publication: "Medium",
+  external: true,
+}];
+
+export const writing = blogPosts[0];
