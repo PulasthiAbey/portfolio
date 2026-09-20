@@ -7,6 +7,7 @@ export const site = {
   github: "https://github.com/PulasthiAbey",
   linkedin: "https://www.linkedin.com/in/pulasthi-aberathne-b87979175/",
   medium: "https://pulasthiaberathne.medium.com/",
+  stackoverflow: "https://stackoverflow.com/users/10832040/pulasthi-aberathne",
 };
 
 export function getExperienceYears(date = new Date()) {
@@ -28,7 +29,7 @@ export const navigation = [
   { label: "Expertise", href: "/#expertise" },
   { label: "Work", href: "/#work" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const expertise = [

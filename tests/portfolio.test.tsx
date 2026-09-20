@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import Home from "@/app/page";
+import ContactPage from "@/app/contact/page";
 import BlogPage from "@/app/blog/page";
 import { getExperienceYears, site, writing } from "@/data/portfolio";
 
@@ -27,7 +28,7 @@ describe("portfolio page", () => {
       "/#expertise",
       "/#work",
       "/blog",
-      "/#contact",
+      "/contact",
     ]);
   });
 
@@ -43,7 +44,7 @@ describe("portfolio page", () => {
       "/#expertise",
       "/#work",
       "/blog",
-      "/#contact",
+      "/contact",
     ]);
 
     fireEvent.click(within(mobileNavigation).getByRole("link", { name: "Work" }));
@@ -79,6 +80,18 @@ describe("blog page", () => {
     expect(screen.getByRole("heading", { name: "Engineering Writing" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Read on Medium/ })).toHaveAttribute("href", writing.href);
     expect(screen.getByRole("link", { name: /View selected work/ })).toHaveAttribute("href", "/#work");
+  });
+});
+
+describe("contact page", () => {
+  it("provides the primary contact and professional profile destinations", () => {
+    render(<ContactPage />);
+
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole("heading", { name: "Let's Build Something Useful" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Email me/ })).toHaveAttribute("href", "mailto:hello@pulasthiabey.dev");
+    expect(screen.getAllByRole("link", { name: "LinkedIn" }).every((link) => link.getAttribute("href") === site.linkedin)).toBe(true);
+    expect(screen.getAllByRole("link", { name: "GitHub" }).every((link) => link.getAttribute("href") === site.github)).toBe(true);
   });
 });
 
