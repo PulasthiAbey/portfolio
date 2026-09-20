@@ -3,7 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Icon } from "@/components/icon";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { site, writing } from "@/data/portfolio";
+import { site } from "@/data/portfolio";
+import { writing } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "Zebra Nucleus Engineering Case Study | Pulasthi Aberathne",

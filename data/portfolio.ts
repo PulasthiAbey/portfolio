@@ -44,26 +44,3 @@ export const caseStudies = [
   { number: "02", type: "Enterprise distributed systems", title: "Zebra Nucleus", description: "Enterprise distributed systems work across backend services, service communication, frontend applications, and cloud-native delivery.", details: ["High-level case study; details intentionally limited to respect client and employer confidentiality."], technologies: ["Java", "Spring Boot", "TypeScript", "gRPC", "React", "Helm", "GCP"] },
   { number: "03", type: "Product engineering", title: "Mobile & Web Product Engineering", description: "Professional work across React, React Native, and TypeScript applications, including API integration, GraphQL, mobile development, production troubleshooting, and reliability work.", details: [], technologies: ["React", "React Native", "TypeScript", "GraphQL", "REST APIs"] },
 ];
-
-export type BlogPost = {
-  slug?: string;
-  title: string;
-  description: string;
-  href: string;
-  topics: string[];
-  publishedAt?: string;
-  updatedAt?: string;
-  publication?: string;
-  external: boolean;
-};
-
-export const blogPosts: BlogPost[] = [{
-  title: "gRPC vs REST: What I Learned Using Both in Distributed Systems",
-  description: "Why the right choice depends less on the technology and more on the communication boundary you’re designing.",
-  href: "https://pulasthiaberathne.medium.com/grpc-vs-rest-what-i-learned-using-both-in-distributed-systems-390945ad7174",
-  topics: ["Distributed Systems", "gRPC", "REST", "APIs"],
-  publication: "Medium",
-  external: true,
-}];
-
-export const writing = blogPosts[0];
