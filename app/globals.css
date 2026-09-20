@@ -64,3 +64,12 @@ h1, h2, h3, p { margin-top: 0; } h1 { animation: rise-in .8s .16s both; font-siz
 
 /* Account for the column gap so each bus endpoint lands on its card center. */
 @media (min-width: 561px) { .case-provider-grid::before, .case-provider-grid::after { left: calc(25% - 3px); right: calc(25% - 3px); } }
+
+@keyframes case-flow-node-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes case-flow-line-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes case-flow-bus-in { from { opacity: 0; transform: scaleX(.72); } to { opacity: 1; transform: scaleX(1); } }
+@keyframes case-flow-drop-in { from { opacity: 0; transform: scaleY(.2); transform-origin: top; } to { opacity: 1; transform: scaleY(1); transform-origin: top; } }
+.case-flow > .case-flow-node { animation: case-flow-node-in .6s cubic-bezier(.2, .8, .2, 1) both; }
+.case-flow > .case-flow-node:nth-child(1) { animation-delay: .05s; }.case-flow > .case-flow-node:nth-child(3) { animation-delay: .16s; }.case-flow > .case-flow-node:nth-child(7) { animation-delay: .38s; }.case-flow > .case-flow-node:nth-child(9) { animation-delay: .5s; }.case-flow > .case-flow-node:nth-child(11) { animation-delay: .62s; }.case-flow > .case-flow-node:nth-child(13) { animation-delay: .74s; }.case-flow > .case-flow-node:nth-child(15) { animation-delay: .86s; }
+.case-flow > .case-flow-connector { animation: case-flow-line-in .45s ease both; }.case-flow > .case-flow-connector:nth-child(2) { animation-delay: .1s; }.case-flow > .case-flow-connector:nth-child(4) { animation-delay: .22s; }.case-flow > .case-flow-connector:nth-child(8) { animation-delay: .44s; }.case-flow > .case-flow-connector:nth-child(10) { animation-delay: .56s; }.case-flow > .case-flow-connector:nth-child(12) { animation-delay: .68s; }.case-flow > .case-flow-connector:nth-child(14) { animation-delay: .8s; }.case-flow > .case-flow-connector:nth-child(16) { animation-delay: .92s; }
+.case-provider-grid::before, .case-provider-grid::after { animation: case-flow-bus-in .55s cubic-bezier(.2, .8, .2, 1) .25s both; }.case-provider-node::before, .case-provider-node::after { animation: case-flow-drop-in .35s ease .42s both; }
