@@ -3,7 +3,8 @@ import { describe, expect, it } from "vitest";
 import Home from "@/app/page";
 import ContactPage from "@/app/contact/page";
 import BlogPage from "@/app/blog/page";
-import { getExperienceYears, site, writing } from "@/data/portfolio";
+import { getExperienceYears, site } from "@/data/portfolio";
+import { blogPosts, getBlogPostHref } from "@/lib/blog";
 
 describe("portfolio page", () => {
   it("renders the important portfolio sections", () => {
@@ -57,7 +58,7 @@ describe("portfolio page", () => {
     expect(screen.getAllByRole("link", { name: "GitHub" }).every((link) => link.getAttribute("href") === site.github)).toBe(true);
     expect(screen.getAllByRole("link", { name: "LinkedIn" }).every((link) => link.getAttribute("href") === site.linkedin)).toBe(true);
     expect(screen.getByRole("link", { name: /hello@pulasthiabey\.dev/ })).toHaveAttribute("href", `mailto:${site.email}`);
-    expect(screen.getByRole("link", { name: /Read on Medium/ })).toHaveAttribute("href", writing.href);
+    expect(screen.getByRole("link", { name: /Read on Medium/ })).toHaveAttribute("href", getBlogPostHref(blogPosts[0]));
   });
 
   it("switches the theme and updates the accessible control label", () => {
@@ -77,8 +78,8 @@ describe("blog page", () => {
     render(<BlogPage />);
 
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-    expect(screen.getByRole("heading", { name: "Engineering Writing" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Read on Medium/ })).toHaveAttribute("href", writing.href);
+    expect(screen.getByRole("heading", { name: "Engineering Blog" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Read on Medium/ })).toHaveAttribute("href", getBlogPostHref(blogPosts[0]));
     expect(screen.getByRole("link", { name: /View selected work/ })).toHaveAttribute("href", "/#work");
   });
 });
