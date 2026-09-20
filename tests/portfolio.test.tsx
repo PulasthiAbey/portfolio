@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import Home from "@/app/page";
-import WritingPage from "@/app/writing/page";
+import BlogPage from "@/app/blog/page";
 import { getExperienceYears, site, writing } from "@/data/portfolio";
 
 describe("portfolio page", () => {
@@ -26,7 +26,7 @@ describe("portfolio page", () => {
       "/#about",
       "/#expertise",
       "/#work",
-      "/writing",
+      "/blog",
       "/#contact",
     ]);
   });
@@ -42,7 +42,7 @@ describe("portfolio page", () => {
       "/#about",
       "/#expertise",
       "/#work",
-      "/writing",
+      "/blog",
       "/#contact",
     ]);
 
@@ -71,13 +71,13 @@ describe("portfolio page", () => {
   });
 });
 
-describe("writing page", () => {
+describe("blog page", () => {
   it("renders the external article without duplicating its content", () => {
-    render(<WritingPage />);
+    render(<BlogPage />);
 
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-    expect(screen.getByRole("heading", { name: "Engineering Notes & Writing" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Read article/ })).toHaveAttribute("href", writing.href);
+    expect(screen.getByRole("heading", { name: "Engineering Writing" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Read on Medium/ })).toHaveAttribute("href", writing.href);
     expect(screen.getByRole("link", { name: /View selected work/ })).toHaveAttribute("href", "/#work");
   });
 });

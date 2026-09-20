@@ -27,7 +27,7 @@ export const navigation = [
   { label: "About", href: "/#about" },
   { label: "Expertise", href: "/#expertise" },
   { label: "Work", href: "/#work" },
-  { label: "Writing", href: "/writing" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -44,22 +44,25 @@ export const caseStudies = [
   { number: "03", type: "Product engineering", title: "Mobile & Web Product Engineering", description: "Professional work across React, React Native, and TypeScript applications, including API integration, GraphQL, mobile development, production troubleshooting, and reliability work.", details: [], technologies: ["React", "React Native", "TypeScript", "GraphQL", "REST APIs"] },
 ];
 
-export type WritingEntry = {
+export type BlogPost = {
+  slug?: string;
   title: string;
   description: string;
   href: string;
   topics: string[];
+  publishedAt?: string;
+  updatedAt?: string;
   publication?: string;
-  external?: boolean;
+  external: boolean;
 };
 
-export const writing: WritingEntry = {
+export const blogPosts: BlogPost[] = [{
   title: "gRPC vs REST: What I Learned Using Both in Distributed Systems",
   description: "Why the right choice depends less on the technology and more on the communication boundary you’re designing.",
   href: "https://pulasthiaberathne.medium.com/grpc-vs-rest-what-i-learned-using-both-in-distributed-systems-390945ad7174",
   topics: ["Distributed Systems", "gRPC", "REST", "APIs"],
   publication: "Medium",
   external: true,
-};
+}];
 
-export const writingEntries: WritingEntry[] = [writing];
+export const writing = blogPosts[0];
